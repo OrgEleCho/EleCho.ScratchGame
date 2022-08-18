@@ -9,10 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyWar", "SkyWar\SkyWar.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AC5F0AB6-1C1E-4B71-B1C3-BEFFD9C7FAA3}"
 	ProjectSection(SolutionItems) = preProject
+		resrc\videos\preview.mp4 = resrc\videos\preview.mp4
 		readme.md = readme.md
 	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{489E9E47-2018-41FC-A429-11A226BBFFF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

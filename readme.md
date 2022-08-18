@@ -12,3 +12,4 @@
 
 ## ‘§¿¿ / Preview
 
+![preview](blob/raw/main/resrc/videos/preview.mp4)
