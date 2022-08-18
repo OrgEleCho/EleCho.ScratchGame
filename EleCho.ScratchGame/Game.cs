@@ -24,7 +24,7 @@ namespace EleCho.ScratchGame
             gdiLeftTop = Point.Truncate(GameUtils.OriginPoint2GdiPoint(Size, Point.Empty));
             Bounds = new Rectangle(new Point(-width / 2, -height / 2), Size);
 
-            spritesCache = new GameSpriteCache(this);
+            spritesCache = new GameBitmapCache(this);
             bufferedGraphics = BufferedGraphicsManager.Current.Allocate(host.GameGraphics, new Rectangle(0, 0, width, height));
             bufferedGraphics.Graphics.Transform = new Matrix(1, 0, 0, 1, (float)width / 2, (float)height / 2);
         }
@@ -38,7 +38,7 @@ namespace EleCho.ScratchGame
             gdiLeftTop = Point.Empty;
             Bounds = Rectangle.Empty;
 
-            spritesCache = new GameSpriteCache(this);
+            spritesCache = new GameBitmapCache(this);
             bufferedGraphics = null;
         }
 
@@ -87,7 +87,7 @@ namespace EleCho.ScratchGame
         private Image? bufferOrigin;
         private Bitmap? bufferedBackground;
 
-        private readonly GameSpriteCache spritesCache;
+        private readonly GameBitmapCache spritesCache;
 
         internal Bitmap GetProcessedSprite(Image origin, float scale, float rotation)
         {
@@ -121,8 +121,7 @@ namespace EleCho.ScratchGame
         }
         public bool IsCollided(GameSprite a, GameSprite b)
         {
-
-            return GameUtils.IsCollided(a, b, this);
+            return GameUtils.IsCollided(a, b);
         }
 
         public void InvokeMouse(PointF point)
@@ -234,7 +233,6 @@ namespace EleCho.ScratchGame
                 throw new InvalidOperationException("Game is not running");
 
             gameRunCancellation.Cancel();
-            gameRunTask?.Wait();
 
             gameRunTask = null;
             gameRunCancellation = null;
