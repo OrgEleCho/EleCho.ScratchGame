@@ -38,6 +38,13 @@ namespace EleCho.ScratchGame
             mainScene.AddObject(bg2);
             mainScene.AddObject(player);
             mainScene.AddObject(enermyGen);
+
+            game.AddObject(new RotatingText()
+            {
+                Text = "Hello world",
+                Scale = 3,
+                Rotation = 45
+            });
         }
 
         private void MainForm_Load(object sender, EventArgs e)

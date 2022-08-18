@@ -44,34 +44,23 @@ namespace EleCho.ScratchGame.Utils
             g.DrawImage(origin, (int)targetPoint.X, (int)targetPoint.Y, (int)scaledSize.Width, (int)scaledSize.Height);
         }
 
-        public static void ScaleImage(Image origin, float scale, out Bitmap output)
+        public static void ProcessText(Graphics g, Font font, Brush brush, string text, float scale, float rotation, out Bitmap output)
         {
-            float scaledWidth = origin.Width * scale;
-            float scaledHeight = origin.Height * scale;
-            output = new Bitmap((int)scaledWidth, (int)scaledHeight, origin.PixelFormat);
-
-            using Graphics g = Graphics.FromImage(output);
-            g.DrawImage(origin, 0, 0, scaledWidth, scaledHeight);
-        }
-
-        /// <summary>
-        /// 旋转图片
-        /// </summary>
-        /// <param name="origin">原图</param>
-        /// <param name="rotation">旋转角度(角度值)</param>
-        /// <param name="output">输出</param>
-        public static void RotateImage(Image origin, float rotation, out Bitmap output)
-        {
-            SizeF newSize = ImgUtils.Rotate(origin.Size, rotation);
-            output = new Bitmap((int)newSize.Width, (int)newSize.Height, origin.PixelFormat);
+            SizeF originSize = g.MeasureString(text, font, PointF.Empty, StringFormat.GenericTypographic);
+            SizeF scaledSize = originSize * scale;
+            SizeF newSize = ImgUtils.Rotate(scaledSize, rotation);
+            output = new Bitmap((int)newSize.Width, (int)newSize.Height, PixelFormat.Format32bppArgb);
 
             Matrix matrix = new Matrix();
-            matrix.RotateAt(rotation, new PointF(newSize.Width / 2, newSize.Height / 2));
+            matrix.Scale(scale, scale);
+            matrix.RotateAt(rotation, new PointF(newSize.Width / scale / 2, newSize.Height / scale / 2));
 
-            PointF targetPoint = (PointF)ImgUtils.UniformOffset(newSize, origin.Size);
-            using Graphics g = Graphics.FromImage(output);
-            g.Transform = matrix;
-            g.DrawImage(origin, (int)targetPoint.X, (int)targetPoint.Y);   // for high performance
+            PointF targetPoint = (PointF)ImgUtils.UniformOffset(newSize, scaledSize);
+            targetPoint = new PointF(targetPoint.X / scale, targetPoint.Y / scale);
+            using Graphics _g = Graphics.FromImage(output);
+
+            _g.Transform = matrix;
+            _g.DrawString(text, font, brush, targetPoint, StringFormat.GenericTypographic);
         }
 
         /// <summary>

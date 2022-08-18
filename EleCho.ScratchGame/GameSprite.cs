@@ -6,34 +6,54 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace EleCho.ScratchGame
 {
     public class GameSprite : GameObject
     {
+        public Image? Sprite { get; set; }
+
         public GameSprite()
         {
 
         }
 
-        #region 基础定义
-        public Image? Sprite { get; set; }
+        #region 性能优化
+
+        internal static Bitmap GetProcessedSprite(Game game, Image origin, float scale, float rotation)
+        {
+            Game.GameSpriteCacheKey key = new Game.GameSpriteCacheKey(origin, scale, rotation);
+            if (game.spritesCache.TryGetValue(key, out var img))
+            {
+                return img;
+            }
+            else
+            {
+                GdiUtils.ProcessImage(origin, scale, rotation, out Bitmap processedSprite);
+                game.spritesCache[key] = processedSprite;
+                return processedSprite;
+            }
+        }
 
         #endregion
         #region 鼠标键盘事件逻辑
         #endregion
 
-        public override void Render()
+        public override Bitmap? GetActualCanvas()
         {
             if (Sprite == null || !Visible || game == null)
-                return;
+                return null;
+            return GetProcessedSprite(Game, Sprite, Scale, Rotation);
+        }
 
-            PointF gdilocation = GameUtils.GamePoint2GdiPoint(Position);
-
-            Image bufferedSprite = Game.GetProcessedSprite(Sprite, Scale, Rotation);
-            SizeF size = (SizeF)bufferedSprite.Size;
-            PointF originLocation = new PointF(gdilocation.X - size.Width / 2, gdilocation.Y - size.Height / 2);
-            game.Graphics.DrawImage(bufferedSprite, (int)originLocation.X, (int)originLocation.Y);
+        public override void Render()
+        {
+            if (GetActualCanvas() is Bitmap output)
+            {
+                PointF gdilocation = GameUtils.GamePoint2GdiPoint(Position);
+                SizeF size = (SizeF)output.Size;
+                PointF originLocation = new PointF(gdilocation.X - size.Width / 2, gdilocation.Y - size.Height / 2);
+                game!.Graphics.DrawImage(output, (int)originLocation.X, (int)originLocation.Y);
+            }
         }
     }
 }

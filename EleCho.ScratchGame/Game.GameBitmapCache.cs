@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-
 namespace EleCho.ScratchGame
 {
 
@@ -13,7 +12,7 @@ namespace EleCho.ScratchGame
 
         }
 
-        public struct GameSpriteCacheKey : IGameBitmapCacheKey
+        public record struct GameSpriteCacheKey : IGameBitmapCacheKey
         {
             public readonly Image Sprite;
             public readonly float Scale;
@@ -26,30 +25,32 @@ namespace EleCho.ScratchGame
                 Rotation = rotation;
             }
 
-            public override int GetHashCode()
+            public override string ToString()
             {
-                return HashCode.Combine(Sprite, Scale, Rotation);
+                return $"{Sprite} {Scale}% {Rotation}°";
             }
         }
 
-        public struct GameTextCacheKey : IGameBitmapCacheKey
+        public record struct GameTextCacheKey : IGameBitmapCacheKey
         {
-            public readonly string Text;
             public readonly Font Font;
+            public readonly Brush Brush;
+            public readonly string Text;
             public readonly float Scale;
             public readonly float Rotation;
 
-            public GameTextCacheKey(string text, Font font, float scale, float rotation)
+            public GameTextCacheKey(Font font, Brush brush, string text, float scale, float rotation)
             {
-                Text = text;
+                Text = string.Intern(text);
                 Font = font;
+                Brush = brush;
                 Scale = scale;
                 Rotation = rotation;
             }
 
-            public override int GetHashCode()
+            public override string ToString()
             {
-                return HashCode.Combine(Text, Font, Scale, Rotation);
+                return $"{Font} {Brush} {Text} {Scale}% {Rotation}°";
             }
         }
 
@@ -106,6 +107,10 @@ namespace EleCho.ScratchGame
                         dict.Remove(firstNode.ValueRef.Key);
                     }
                 }
+
+#if DEBUG
+                Debug.WriteLine($"CacheCount: {dict.Count}");
+#endif
             }
 
             public Bitmap this[IGameBitmapCacheKey key]
@@ -124,6 +129,9 @@ namespace EleCho.ScratchGame
                     }
 
                     dict[key] = new GameBitmapCacheItem(value, game.Time);
+#if DEBUG
+                    Debug.WriteLine($"");
+#endif
                 }
             }
 

@@ -87,23 +87,7 @@ namespace EleCho.ScratchGame
         private Image? bufferOrigin;
         private Bitmap? bufferedBackground;
 
-        private readonly GameBitmapCache spritesCache;
-
-        internal Bitmap GetProcessedSprite(Image origin, float scale, float rotation)
-        {
-            GameSpriteCacheKey key = new GameSpriteCacheKey(origin, scale, rotation);
-            if (spritesCache.TryGetValue(key, out var img))
-            {
-                return img;
-            }
-            else
-            {
-                Bitmap processedSprite;
-                GdiUtils.ProcessImage(origin, scale, rotation, out processedSprite);
-                spritesCache[key] = processedSprite;
-                return processedSprite;
-            }
-        }
+        internal readonly GameBitmapCache spritesCache;
 
         #endregion
 

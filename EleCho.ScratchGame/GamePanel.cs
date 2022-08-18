@@ -39,7 +39,7 @@ namespace EleCho.ScratchGame
 
         public int RenderDelay { get; set; } = 20;
 
-        public Point OriginMousePosition => PointToClient(Control.MousePosition);
+        public Point OriginMousePosition => PointToClient(MousePosition);
 
         const int WM_KEYDOWN                     = 0x0100;
         const int WM_KEYUP                       = 0x0101;
@@ -152,7 +152,11 @@ namespace EleCho.ScratchGame
                     return;
 
                 await Task.Delay(RenderDelay, token);
-                OnPaint(new PaintEventArgs(Graphics.FromHwnd(Handle), ClientRectangle));
+                try
+                {
+                    OnPaint(new PaintEventArgs(Graphics.FromHwnd(Handle), ClientRectangle));
+                }
+                catch { }
             }
         }
 
