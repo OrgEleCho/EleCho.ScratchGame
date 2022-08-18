@@ -74,9 +74,11 @@ namespace EleCho.ScratchGame.Utils
             return region.IsVisible(gamePoint);
         }
 
-        public static bool IsCollided(GameSprite a, GameSprite b, Game game)
+        public static bool IsCollided(GameSprite a, GameSprite b)
         {
             if (a.Sprite == null || b.Sprite == null)
+                return false;
+            if (a.game is not Game game || b.Game is not Game || b.game != game)
                 return false;
 
             Bitmap bmp1 = game.GetProcessedSprite(a.Sprite, a.Scale, a.Rotation);
@@ -97,7 +99,7 @@ namespace EleCho.ScratchGame.Utils
         }
 
         /// <summary>
-        /// 判断是否碰撞 (请使用 X正方向为左, Y正方向为下的坐标系)
+        /// 像素级判断是否碰撞 (请使用 X正方向为左, Y正方向为下的坐标系)
         /// </summary>
         /// <param name="bmp1">图片1</param>
         /// <param name="bmp2">图片2</param>
