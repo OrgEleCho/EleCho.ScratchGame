@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Sprites\**" />
+    <EmbeddedResource Remove="Sprites\**" />
+    <None Remove="Sprites\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\EleCho.ScratchGame\EleCho.ScratchGame.csproj" />
   </ItemGroup>
 
@@ -25,10 +31,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Sprites\" />
   </ItemGroup>
 
   <ItemGroup>

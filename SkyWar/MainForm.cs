@@ -53,5 +53,16 @@ namespace EleCho.ScratchGame
             Point center = (Point)((ClientSize - gamePanel.Size) / 2);
             gamePanel.Location = center;
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            game.LoadScene(mainScene);
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (game.IsRunning)
+                game.StopGame();
+        }
     }
 }
