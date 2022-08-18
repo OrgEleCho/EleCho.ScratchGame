@@ -1,13 +1,8 @@
 ﻿using PolygonIntersection;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EleCho.ScratchGame.Utils
 {
@@ -74,28 +69,19 @@ namespace EleCho.ScratchGame.Utils
             return region.IsVisible(gamePoint);
         }
 
-        public static bool IsCollided(GameSprite a, GameSprite b)
+        public static bool IsCollided(GameObject a, GameObject b)
         {
-            if (a.Sprite == null || b.Sprite == null)
-                return false;
-            if (a.game is not Game game || b.Game is not Game || b.game != game)
-                return false;
+            if (a.GetActualCanvas() is Bitmap abmp &&
+                b.GetActualCanvas() is Bitmap bbmp)
+            {
+                PointF
+                    apos = GamePoint2GdiPoint(a.Position) - abmp.Size / 2f,
+                    bpos = GamePoint2GdiPoint(b.Position) - bbmp.Size / 2f;
 
-            Bitmap bmp1 = game.GetProcessedSprite(a.Sprite, a.Scale, a.Rotation);
-            Bitmap bmp2 = game.GetProcessedSprite(b.Sprite, b.Scale, b.Rotation);
+                return IsCollided(abmp, bbmp, (int)apos.X, (int)apos.Y, (int)bpos.X, (int)bpos.Y);
+            }
 
-            PointF
-                pos1 = GamePoint2GdiPoint(a.Position) - bmp1.Size / 2f,
-                pos2 = GamePoint2GdiPoint(b.Position) - bmp2.Size / 2f;
-
-            return IsCollided(bmp1, bmp2, (int)pos1.X, (int)pos1.Y, (int)pos2.X, (int)pos2.Y);
-
-            PointF[] vertexes1 = GetSpriteVertexes(a);
-            PointF[] vertexes2 = GetSpriteVertexes(b);
-            Polygon polygon1 = new Polygon(vertexes1);
-            Polygon polygon2 = new Polygon(vertexes2);
-
-            return Polygon.Collision(polygon1, polygon2);
+            return false;
         }
 
         /// <summary>
@@ -139,11 +125,11 @@ namespace EleCho.ScratchGame.Utils
                     PixelFormat.Format16bppRgb565 or
                     PixelFormat.Format24bppRgb or
                     PixelFormat.Format32bppRgb or
-                    PixelFormat.Format1bppIndexed or 
+                    PixelFormat.Format1bppIndexed or
                     PixelFormat.Format4bppIndexed or
-                    PixelFormat.Format8bppIndexed or 
+                    PixelFormat.Format8bppIndexed or
                     PixelFormat.Format48bppRgb => IsTransparentAlwaysTrue,
-                    PixelFormat.Format64bppPArgb or 
+                    PixelFormat.Format64bppPArgb or
                     PixelFormat.Format64bppArgb => IsTransparent64,
                     PixelFormat.Format32bppPArgb or
                     PixelFormat.Format32bppArgb => IsTransparent32,
