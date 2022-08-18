@@ -18,6 +18,8 @@ namespace EleCho.ScratchGame
         public GamePanel()
         {
             InitializeComponent();
+
+            SetStyle(ControlStyles.Selectable, true);
         }
 
         public Game? Game
@@ -67,24 +69,32 @@ namespace EleCho.ScratchGame
                     keyStates[(KeyboardKey)m.WParam] = false;
                     return;
                 case WM_LBUTTONDOWN:
+                    if (!Focused)
+                        Focus();
                     mouseStates[MouseButton.Left] = true;
                     return;
                 case WM_LBUTTONUP:
                     mouseStates[MouseButton.Left] = false;
                     return;
                 case WM_MBUTTONDOWN:
+                    if (!Focused)
+                        Focus();
                     mouseStates[MouseButton.Middle] = true;
                     return;
                 case WM_MBUTTONUP:
                     mouseStates[MouseButton.Middle] = false;
                     return;
                 case WM_RBUTTONDOWN:
+                    if (!Focused)
+                        Focus();
                     mouseStates[MouseButton.Right] = true;
                     return;
                 case WM_RBUTTONUP:
                     mouseStates[MouseButton.Right] = false;
                     return;
                 case WM_XBUTTONDOWN:
+                    if (!Focused)
+                        Focus();
                     switch (((int)m.WParam >> 16) & 0xFFFF)
                     {
                         case 1:
@@ -161,7 +171,6 @@ namespace EleCho.ScratchGame
                 throw new InvalidOperationException("Render is not running");
 
             renderCancellation.Cancel();
-            renderTask?.Wait();
 
             renderTask = null;
             renderCancellation = null;
