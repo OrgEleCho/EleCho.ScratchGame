@@ -8,6 +8,8 @@
 
         public Game Game => game ?? Game.Empty;
         public PointF Position { get; set; }
+        public float Scale { get; set; } = 1;
+        public int Rotation { get; set; }
         public bool Visible { get; set; } = true;
 
         public virtual void InvokeKeyboard(KeyboardKey key)
