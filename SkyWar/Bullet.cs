@@ -11,8 +11,8 @@ namespace SkyWar
 {
     internal class Bullet : GameSprite
     {
-        static Image bullet1 = Resources.bullet1;
-        static Image bullet2 = Resources.bullet2;
+        static Bitmap bullet1 = Resources.bullet1;
+        static Bitmap bullet2 = Resources.bullet2;
 
         public Bullet()
         {

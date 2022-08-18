@@ -23,10 +23,10 @@ namespace EleCho.ScratchGame
             Size = new Size(Width, Height);
             gdiLeftTop = Point.Truncate(GameUtils.OriginPoint2GdiPoint(Size, Point.Empty));
             Bounds = new Rectangle(new Point(-width / 2, -height / 2), Size);
-
-            spritesCache = new GameBitmapCache(this);
+            
             bufferedGraphics = BufferedGraphicsManager.Current.Allocate(host.GameGraphics, new Rectangle(0, 0, width, height));
             bufferedGraphics.Graphics.Transform = new Matrix(1, 0, 0, 1, (float)width / 2, (float)height / 2);
+            
         }
 
         private Game()
@@ -38,7 +38,6 @@ namespace EleCho.ScratchGame
             gdiLeftTop = Point.Empty;
             Bounds = Rectangle.Empty;
 
-            spritesCache = new GameBitmapCache(this);
             bufferedGraphics = null;
         }
 
@@ -86,8 +85,6 @@ namespace EleCho.ScratchGame
         #region 性能优化
         private Image? bufferOrigin;
         private Bitmap? bufferedBackground;
-
-        internal readonly GameBitmapCache spritesCache;
 
         #endregion
 
@@ -177,7 +174,6 @@ namespace EleCho.ScratchGame
             Time = (float)(now - startTime.Value).TotalSeconds;
             DeltaTime = (float)(now - lastFrameTime.Value).TotalSeconds;
 
-            spritesCache.Update();
             foreach (GameObject obj in this)
                 obj.Update();
 

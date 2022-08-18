@@ -18,7 +18,6 @@ namespace EleCho.ScratchGame
         public GamePanel()
         {
             InitializeComponent();
-
             SetStyle(ControlStyles.Selectable, true);
         }
 

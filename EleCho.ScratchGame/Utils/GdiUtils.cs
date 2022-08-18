@@ -91,4 +91,15 @@ namespace EleCho.ScratchGame.Utils
             g.DrawImage(origin, (int)drawarea.X, (int)drawarea.Y, (int)drawarea.Width, (int)drawarea.Height);
         }
     }
+
+    public static class GdiEx
+    {
+        public static void ScaleAndRotateAt(this Matrix m, float scaleX, float scaleY, float angle, PointF point)
+        {
+            m.Translate(point.X, point.Y);
+            m.Scale(scaleX, scaleY);
+            m.Rotate(angle);
+            m.Translate(-point.X, -point.Y);
+        }
+    }
 }

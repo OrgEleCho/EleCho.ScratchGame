@@ -12,8 +12,8 @@ namespace SkyWar
 {
     internal class Enermy : GameSprite
     {
-        static Image enermy = Resources.enemy1;
-        static Image[] deathSequence = new Image[]
+        static Bitmap enermy = Resources.enemy1;
+        static Bitmap[] deathSequence = new Bitmap[]
         {
             Resources.enemy1_down1,
             Resources.enemy1_down2,

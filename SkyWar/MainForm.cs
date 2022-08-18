@@ -24,9 +24,9 @@ namespace EleCho.ScratchGame
             gamePanel.Game = game;
 
             GameSound gs = new GameSound();           // 背景音乐
-            GameSprite bg1 = new Background();        // 背景1
-            GameSprite bg2 = new Background();        // 背景2  (背景1和2交替滚动实现无限的背景)
-            GameSprite player = new Warplane();       // 玩家
+            Background bg1 = new Background() { Sprite = Resources.background_changed };        // 背景1
+            Background bg2 = new Background();        // 背景2  (背景1和2交替滚动实现无限的背景)
+            Warplane player = new Warplane() { Scale = 2 } ;       // 玩家
             EnermyGen enermyGen = new EnermyGen();    // 敌人生成 (控制敌人生成的
 
             bg2.Position = new PointF(0, bg2.Sprite!.Height);
@@ -35,16 +35,19 @@ namespace EleCho.ScratchGame
 
             mainScene.AddObject(gs);
             mainScene.AddObject(bg1);
-            mainScene.AddObject(bg2);
+            //mainScene.AddObject(bg2);
             mainScene.AddObject(player);
             mainScene.AddObject(enermyGen);
 
-            game.AddObject(new RotatingText()
-            {
-                Text = "Hello world",
-                Scale = 3,
-                Rotation = 45
-            });
+            bg1.Speed = 0;
+            game.AddObject(bg1);
+
+            //game.AddObject(new RotatingText()
+            //{
+            //    Text = "Hello world",
+            //    Scale = 3,
+            //    Rotation = 45
+            //});
         }
 
         private void MainForm_Load(object sender, EventArgs e)
