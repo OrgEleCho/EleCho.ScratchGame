@@ -12,4 +12,8 @@
 
 ## 预览 / Preview
 
-![preview](blob/raw/main/resrc/videos/preview.mp4)
+<video src="resrc/videos/preview.mp4">
+
+	[点击查看预览视频](resrc/videos/preview.mp4)
+
+</video>
