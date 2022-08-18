@@ -24,33 +24,5 @@ namespace EleCho.ScratchGame
             public void StartRender() => throw new InvalidOperationException("Empty Game object.");
             public void StopRender() => throw new InvalidOperationException("Empty Game object.");
         }
-
-        public record class GameSpriteCacheKey
-        {
-            public readonly Image Sprite;
-            public readonly float Scale;
-            public readonly float Rotation;
-
-            public GameSpriteCacheKey(Image sprite, float scale, float rotation)
-            {
-                Sprite = sprite;
-                Scale = scale;
-                Rotation = rotation;
-            }
-        }
-
-        public record class GameSpriteCacheItem
-        {
-            public readonly Bitmap CachedSprite;
-            public readonly float Time;
-            public float AccessTime;
-
-            public GameSpriteCacheItem(Bitmap cachedSprite, float time)
-            {
-                CachedSprite = cachedSprite;
-                AccessTime = time;
-                Time = time;
-            }
-        }
     }
 }

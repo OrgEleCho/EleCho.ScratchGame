@@ -94,13 +94,13 @@ namespace EleCho.ScratchGame
             GameSpriteCacheKey key = new GameSpriteCacheKey(origin, scale, rotation);
             if (spritesCache.TryGetValue(key, out var img))
             {
-                return img.CachedSprite;
+                return img;
             }
             else
             {
                 Bitmap processedSprite;
                 GdiUtils.ProcessImage(origin, scale, rotation, out processedSprite);
-                spritesCache[key] = new GameSpriteCacheItem(processedSprite, Time);
+                spritesCache[key] = processedSprite;
                 return processedSprite;
             }
         }

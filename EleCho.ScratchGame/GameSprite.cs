@@ -33,7 +33,7 @@ namespace EleCho.ScratchGame
             Image bufferedSprite = Game.GetProcessedSprite(Sprite, Scale, Rotation);
             SizeF size = (SizeF)bufferedSprite.Size;
             PointF originLocation = new PointF(gdilocation.X - size.Width / 2, gdilocation.Y - size.Height / 2);
-            game.Graphics.DrawImageUnscaled(bufferedSprite, (int)originLocation.X, (int)originLocation.Y);
+            game.Graphics.DrawImage(bufferedSprite, (int)originLocation.X, (int)originLocation.Y);
         }
     }
 }

@@ -7,7 +7,34 @@ namespace EleCho.ScratchGame
 
     public partial class Game
     {
-        public class GameSpriteCache : IDictionary<GameSpriteCacheKey, GameSpriteCacheItem>
+        public record struct GameSpriteCacheKey
+        {
+            public readonly Image Sprite;
+            public readonly float Scale;
+            public readonly float Rotation;
+
+            public GameSpriteCacheKey(Image sprite, float scale, float rotation)
+            {
+                Sprite = sprite;
+                Scale = scale;
+                Rotation = rotation;
+            }
+        }
+
+        public record class GameSpriteCacheItem
+        {
+            public readonly Bitmap CachedSprite;
+            public readonly float Time;
+            public float AccessTime;
+
+            public GameSpriteCacheItem(Bitmap cachedSprite, float time)
+            {
+                CachedSprite = cachedSprite;
+                AccessTime = time;
+                Time = time;
+            }
+        }
+        public class GameSpriteCache : IDictionary<GameSpriteCacheKey, Bitmap>
         {
             LinkedList<KeyValuePair<GameSpriteCacheKey, GameSpriteCacheItem>> list = new LinkedList<KeyValuePair<GameSpriteCacheKey, GameSpriteCacheItem>>();
             Dictionary<GameSpriteCacheKey, GameSpriteCacheItem> dict = new Dictionary<GameSpriteCacheKey, GameSpriteCacheItem>();
@@ -21,98 +48,104 @@ namespace EleCho.ScratchGame
             /// <summary>
             /// Timeout in second
             /// </summary>
-            float Timeout { get; set; } = 100;
+            float Timeout { get; set; } = 30;
 
             public void Update()
             {
                 while (list.First is LinkedListNode<KeyValuePair<GameSpriteCacheKey, GameSpriteCacheItem>> firstNode && 
-                    game.Time - firstNode.Value.Value.Time > Timeout)
+                       game.Time - firstNode.ValueRef.Value.Time > Timeout)
                 {
                     list.RemoveFirst();
 
-                    if (game.Time - firstNode.Value.Value.AccessTime < Timeout)
-                        list.AddLast(firstNode);
+                    if (game.Time - firstNode.ValueRef.Value.AccessTime < Timeout)
+                    {
+                        list.AddLast(new LinkedListNode<KeyValuePair<GameSpriteCacheKey, GameSpriteCacheItem>>(new KeyValuePair<Game.GameSpriteCacheKey, Game.GameSpriteCacheItem>(
+                            firstNode.ValueRef.Key,
+                            new GameSpriteCacheItem(firstNode.ValueRef.Value.CachedSprite, game.Time))));
+                    }
                 }
             }
 
-            public GameSpriteCacheItem this[GameSpriteCacheKey key]
+            public Bitmap this[GameSpriteCacheKey key]
             {
                 get
                 {
-
                     GameSpriteCacheItem item = dict[key];
                     item.AccessTime = game.Time;
-                    return item;
+                    return item.CachedSprite;
                 }
                 set
                 {
                     if (!dict.ContainsKey(key))
                     {
-                        list.AddLast(new KeyValuePair<GameSpriteCacheKey, GameSpriteCacheItem>(key, value));
+                        list.AddLast(new KeyValuePair<GameSpriteCacheKey, GameSpriteCacheItem>(key, new GameSpriteCacheItem(value, game.Time)));
                     }
 
-                    dict[key] = value;
+                    dict[key] = new GameSpriteCacheItem(value, game.Time);
                 }
             }
 
             public ICollection<GameSpriteCacheKey> Keys => dict.Keys;
-            public ICollection<GameSpriteCacheItem> Values => dict.Values;
+            public ICollection<Bitmap> Values => dict.Values.Select(v => v.CachedSprite).ToList();
 
             public int Count => list.Count;
 
-            bool ICollection<KeyValuePair<GameSpriteCacheKey, GameSpriteCacheItem>>.IsReadOnly => false;
+            bool ICollection<KeyValuePair<GameSpriteCacheKey, Bitmap>>.IsReadOnly => false;
 
-            public void Add(GameSpriteCacheKey key, GameSpriteCacheItem value)
+            public void Add(GameSpriteCacheKey key, Bitmap value)
             {
-                dict.Add(key, value);
-                list.AddLast(new KeyValuePair<GameSpriteCacheKey, GameSpriteCacheItem>(key, value));
+                GameSpriteCacheItem newItem = new GameSpriteCacheItem(value, game.Time);
+                dict.Add(key, newItem);
+                list.AddLast(new KeyValuePair<GameSpriteCacheKey, GameSpriteCacheItem>(key, newItem));
             }
-            public void Add(KeyValuePair<GameSpriteCacheKey, GameSpriteCacheItem> item)
+            public void Add(KeyValuePair<GameSpriteCacheKey, Bitmap> item)
             {
-                dict.Add(item.Key, item.Value);
-                list.AddLast(item);
+                GameSpriteCacheItem newItem = new GameSpriteCacheItem(item.Value, game.Time);
+                dict.Add(item.Key, newItem);
+                list.AddLast(new KeyValuePair<GameSpriteCacheKey, GameSpriteCacheItem>(item.Key, newItem));
             }
             public void Clear()
             {
                 dict.Clear();
                 list.Clear();
             }
-            public bool Contains(KeyValuePair<GameSpriteCacheKey, GameSpriteCacheItem> item) => dict.Contains(item);
+            public bool Contains(KeyValuePair<GameSpriteCacheKey, Bitmap> item)
+            {
+                if (dict.TryGetValue(item.Key, out var cachedSprite))
+                {
+                    return item.Value == cachedSprite.CachedSprite;
+                }
+
+                return false;
+            }
+
             public bool ContainsKey(GameSpriteCacheKey key) => dict.ContainsKey(key);
-            public void CopyTo(KeyValuePair<GameSpriteCacheKey, GameSpriteCacheItem>[] array, int arrayIndex) => 
-                (dict as IDictionary<GameSpriteCacheKey, GameSpriteCacheItem>).CopyTo(array, arrayIndex);
-            public bool Remove(GameSpriteCacheKey key)
+            void ICollection<KeyValuePair<GameSpriteCacheKey, Bitmap>>.CopyTo(KeyValuePair<GameSpriteCacheKey, Bitmap>[] array, int arrayIndex) =>
+                throw new InvalidOperationException("Not supported");
+            public bool Remove(GameSpriteCacheKey key) => throw new InvalidOperationException();
+            public bool Remove(KeyValuePair<GameSpriteCacheKey, Bitmap> item) => throw new InvalidOperationException();
+            public bool TryGetValue(GameSpriteCacheKey key, [MaybeNullWhen(false)] out Bitmap value)
             {
-                if (dict.TryGetValue(key, out var item))
+                if (dict.TryGetValue(key, out var cachedSprite))
                 {
-                    list.Remove(new KeyValuePair<GameSpriteCacheKey, GameSpriteCacheItem>(key, item));
+                    cachedSprite.AccessTime = game.Time;
+                    value = cachedSprite.CachedSprite;
                     return true;
                 }
 
+                value = null;
                 return false;
             }
-            public bool Remove(KeyValuePair<GameSpriteCacheKey, GameSpriteCacheItem> item)
+
+            IEnumerator<KeyValuePair<GameSpriteCacheKey, Bitmap>> EnumAsBitmap()
             {
-                if (dict.Remove(item.Key))
+                foreach (var kv in dict)
                 {
-                    list.Remove(item);
-                    return true;
+                    yield return new KeyValuePair<GameSpriteCacheKey, Bitmap>(kv.Key, kv.Value.CachedSprite);
                 }
-
-                return false;
-            }
-            public bool TryGetValue(GameSpriteCacheKey key, [MaybeNullWhen(false)] out GameSpriteCacheItem value)
-            {
-                if (dict.TryGetValue(key, out value))
-                {
-                    value.AccessTime = game.Time;
-                    return true;
-                }
-
-                return false;
             }
 
-            public IEnumerator<KeyValuePair<GameSpriteCacheKey, GameSpriteCacheItem>> GetEnumerator() => dict.GetEnumerator();
+            public IEnumerator<KeyValuePair<GameSpriteCacheKey, Bitmap>> GetEnumerator() => EnumAsBitmap();
             IEnumerator IEnumerable.GetEnumerator() => dict.GetEnumerator();
         }
     }
