@@ -7,35 +7,34 @@ using System.Threading.Tasks;
 
 namespace EleCho.ScratchGame
 {
-    public class GameScene : ICollection<GameSprite>
+    public class GameScene : ICollection<GameObject>
     {
-        private readonly Game game;
-        private readonly List<GameSprite> sprites = new List<GameSprite>();
+        private readonly List<GameObject> sprites = new List<GameObject>();
 
         public Color CanvasColor { get; set; }
         public Image? Background { get; set; }
-        public List<GameSprite> Sprites => sprites;
+        public List<GameObject> Sprites => sprites;
 
         public int Count => sprites.Count;
 
         public bool IsReadOnly => false;
 
-        public GameScene(Game game)
+        public GameScene()
         {
-            this.game = game;
+
         }
 
-        public void AddSprite(GameSprite sprite) => sprites.Add(sprite);
-        public bool RemoveSprite(GameSprite sprite) => sprites.Remove(sprite);
-        public bool ContainsSprite(GameSprite sprite) => sprites.Contains(sprite);
-        public void RemoveAllSprites() => sprites.Clear();
+        public void AddObject(GameObject sprite) => sprites.Add(sprite);
+        public bool RemoveObject(GameObject sprite) => sprites.Remove(sprite);
+        public bool ContainsObject(GameObject sprite) => sprites.Contains(sprite);
+        public void RemoveAllObjects() => sprites.Clear();
 
-        void ICollection<GameSprite>.CopyTo(GameSprite[] array, int arrayIndex) => sprites.CopyTo(array, arrayIndex);
-        public IEnumerator<GameSprite> GetEnumerator() => sprites.GetEnumerator();
+        void ICollection<GameObject>.CopyTo(GameObject[] array, int arrayIndex) => sprites.CopyTo(array, arrayIndex);
+        public IEnumerator<GameObject> GetEnumerator() => sprites.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-        void ICollection<GameSprite>.Add(GameSprite item) => sprites.Add(item);
-        bool ICollection<GameSprite>.Remove(GameSprite item) => sprites.Remove(item);
-        bool ICollection<GameSprite>.Contains(GameSprite item) => sprites.Contains(item);
-        void ICollection<GameSprite>.Clear() => sprites.Clear();
+        void ICollection<GameObject>.Add(GameObject item) => sprites.Add(item);
+        bool ICollection<GameObject>.Remove(GameObject item) => sprites.Remove(item);
+        bool ICollection<GameObject>.Contains(GameObject item) => sprites.Contains(item);
+        void ICollection<GameObject>.Clear() => sprites.Clear();
     }
 }

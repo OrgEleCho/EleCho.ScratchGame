@@ -9,6 +9,9 @@ namespace EleCho.ScratchGame
     public partial class MainForm : Form
     {
         Game game;
+        GameScene startScene;
+        GameScene mainScene;
+
         public MainForm()
         {
             InitializeComponent();
@@ -28,11 +31,13 @@ namespace EleCho.ScratchGame
 
             bg2.Position = new PointF(0, bg2.Sprite!.Height);
 
-            game.AddObject(gs);
-            game.AddObject(bg1);
-            game.AddObject(bg2);
-            game.AddObject(player);
-            game.AddObject(enermyGen);
+            mainScene = new GameScene();
+
+            mainScene.AddObject(gs);
+            mainScene.AddObject(bg1);
+            mainScene.AddObject(bg2);
+            mainScene.AddObject(player);
+            mainScene.AddObject(enermyGen);
         }
 
         private void MainForm_Load(object sender, EventArgs e)

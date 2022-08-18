@@ -18,6 +18,8 @@ namespace EleCho.ScratchGame
 
         #region 基础定义
         public Image? Sprite { get; set; }
+        public float Scale { get; set; } = 1;
+        public int Rotation { get; set; }
 
         #endregion
         #region 鼠标键盘事件逻辑
