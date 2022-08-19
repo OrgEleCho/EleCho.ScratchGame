@@ -47,7 +47,7 @@ namespace EleCho.ScratchGame
             PointF targetPoint = GameUtils.GamePoint2GdiPoint(Position) - originSize / 2;
 
             g.Transform = matrix;
-            g.DrawString(Text, Font, Brush, targetPoint, StringFormat.GenericTypographic);
+            g.DrawString(Text, Font, Brush, Point.Truncate(targetPoint), StringFormat.GenericTypographic);
 
             g.Transform = origin;
         }
