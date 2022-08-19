@@ -39,16 +39,12 @@ namespace EleCho.ScratchGame
 
             Graphics g = game.Graphics;
             SizeF originSize = g.MeasureString(Text, Font, PointF.Empty, StringFormat.GenericTypographic);
-            SizeF scaledSize = originSize * Scale;
-            SizeF newSize = ImgUtils.Rotate(scaledSize, Rotation);
 
             Matrix origin = g.Transform.Clone();
             Matrix matrix = origin.Clone();
-            matrix.Scale(Scale, Scale);
-            matrix.RotateAt(Rotation, Position);
+            matrix.ScaleAndRotateAt(Scale, Scale, Rotation, GameUtils.GamePoint2GdiPoint(Position));
 
-            PointF targetPoint = GameUtils.GamePoint2GdiPoint(Position - newSize / 2 + ImgUtils.UniformOffset(newSize, scaledSize));
-            targetPoint = new PointF(targetPoint.X / Scale, targetPoint.Y / Scale);
+            PointF targetPoint = GameUtils.GamePoint2GdiPoint(Position) - originSize / 2;
 
             g.Transform = matrix;
             g.DrawString(Text, Font, Brush, targetPoint, StringFormat.GenericTypographic);

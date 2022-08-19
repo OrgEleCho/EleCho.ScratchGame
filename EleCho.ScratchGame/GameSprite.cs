@@ -38,12 +38,10 @@ namespace EleCho.ScratchGame
             if (Sprite == null || !Visible || game == null)
                 return;
 
-
             Graphics g = game.Graphics;
             Sprite.SetResolution(g.DpiX, g.DpiY);
 
             SizeF originSize = Sprite.Size;
-            SizeF scaledSize = originSize * Scale;
 
             Matrix origin = g.Transform.Clone();
             Matrix matrix = origin.Clone();
