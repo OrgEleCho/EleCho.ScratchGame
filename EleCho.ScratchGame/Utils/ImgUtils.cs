@@ -109,39 +109,58 @@ namespace EleCho.ScratchGame.Utils
             float newHeight = (float)(Math.Max(Math.Abs(width * sin - height * cos), Math.Abs(width * sin + height * cos)));
             return new SizeF(newWidth, newHeight);
         }
-        public static PointF RotateAt(PointF centerPoint, PointF point, float radianAngle)
+
+        public static PointF RotateAt(PointF center, PointF point, float radian)
         {
             float
-                x0 = centerPoint.X,
-                y0 = centerPoint.Y,
+                x0 = center.X,
+                y0 = center.Y,
                 x1 = point.X,
                 y1 = point.Y;
 
-            float sina = MathF.Sin(radianAngle);
-            float cosa = MathF.Cos(radianAngle);
+            float sina = MathF.Sin(radian);
+            float cosa = MathF.Cos(radian);
             float x2 = (x1 - x0) * cosa + (y1 - y0) * sina + x0;
             float y2 = (y1 - y0) * cosa - (x1 - x0) * sina + y0;
 
             return new PointF(x2, y2);
         }
-        public static PointF[] RotateAt(RectangleF rectangle, PointF centerPoint, float radianAngle)
+
+        public static void Rotate(float x, float y, float radian, out float outx, out float outy)
         {
-            float left = rectangle.Left;
-            float top = rectangle.Top;
-            float right = rectangle.Right;
-            float bottom = rectangle.Bottom;
+            float sina = MathF.Sin(radian);
+            float cosa = MathF.Cos(radian);
+            outx = (x) * cosa + (y) * sina;
+            outy = (y) * cosa - (x) * sina;
+        }
+
+        public static PointF[] RotateAt(PointF center, PointF[] points, float radian)
+        {
+            int length = points.Length;
+            PointF[] result = new PointF[length];
+            for (int i = 0; i < length; i++)
+                result[i] = RotateAt(center, points[i], radian);
+            return result;
+        }
+
+        public static PointF[] RotateAt(PointF center, RectangleF rect, float radian)
+        {
+            float left = rect.Left;
+            float top = rect.Top;
+            float right = rect.Right;
+            float bottom = rect.Bottom;
 
             return new PointF[]
             {
-                RotateAt(centerPoint, new PointF(left, top), radianAngle),
-                RotateAt(centerPoint, new PointF(right, top), radianAngle),
-                RotateAt(centerPoint, new PointF(right, bottom), radianAngle),
-                RotateAt(centerPoint, new PointF(left, bottom), radianAngle),
+                RotateAt(center, new PointF(left, top), radian),
+                RotateAt(center, new PointF(right, top), radian),
+                RotateAt(center, new PointF(right, bottom), radian),
+                RotateAt(center, new PointF(left, bottom), radian),
             };
         }
 
 
-        public static float Degree2Radian(float degreeAngle) => degreeAngle * MathF.PI / 180;
-        public static float Radian2Degree(float radianAngle) => radianAngle * 180 / MathF.PI;
+        public static float Degree2Radian(float degree) => degree * MathF.PI / 180;
+        public static float Radian2Degree(float radian) => radian * 180 / MathF.PI;
     }
 }

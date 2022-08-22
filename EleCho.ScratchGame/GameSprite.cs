@@ -26,13 +26,6 @@ namespace EleCho.ScratchGame
         #region 鼠标键盘事件逻辑
         #endregion
 
-        public override Bitmap? GetActualCanvas()
-        {
-            if (Sprite == null || !Visible || game == null)
-                return null;
-            return null;
-        }
-
         public override void Render()
         {
             if (Sprite == null || !Visible || game == null)
@@ -42,17 +35,23 @@ namespace EleCho.ScratchGame
             Sprite.SetResolution(g.DpiX, g.DpiY);
 
             SizeF originSize = Sprite.Size;
+            PointF pivot = Pivot;
 
             Matrix origin = g.Transform.Clone();
             Matrix matrix = origin.Clone();
             matrix.ScaleAndRotateAt(Scale, Scale, Rotation, GameUtils.GamePoint2GdiPoint(Position));
 
-            PointF targetPoint = GameUtils.GamePoint2GdiPoint(Position) - originSize / 2;
+            PointF targetPoint = GameUtils.GamePoint2GdiPoint(Position) - new SizeF(originSize.Width * pivot.X, originSize.Height * pivot.Y);
 
             g.Transform = matrix;
             g.DrawImage(Sprite, Point.Truncate(targetPoint));
 
             g.Transform = origin;
+        }
+
+        public override SizeF? GetOriginSize()
+        {
+            return Sprite?.Size;
         }
     }
 }

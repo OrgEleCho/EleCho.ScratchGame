@@ -5,13 +5,18 @@
         internal Game? game;
         private Action? mouseActions;
         private Dictionary<KeyboardKey, Action> keyboardActions = new Dictionary<KeyboardKey, Action>();
-        private int rotation;
+        private float rotation;
 
         public Game Game => game ?? Game.Empty;
         public PointF Position { get; set; }
         public float Scale { get; set; } = 1;
-        public int Rotation { get => rotation; set => rotation = value % 360; }
+        public float Rotation { get => rotation; set => rotation = value % 360; }
         public bool Visible { get; set; } = true;
+
+        public PointF Pivot { get; set; } = new PointF(0.5f, 0.5f);
+        public GameObjectCollider Collider { get; set; } = new GameObjectCollider();
+
+        public abstract SizeF? GetOriginSize();
 
         public virtual void InvokeKeyboard(KeyboardKey key)
         {
@@ -46,8 +51,6 @@
 
             return this;
         }
-
-        public abstract Bitmap? GetActualCanvas();
 
         public abstract void Render();
 

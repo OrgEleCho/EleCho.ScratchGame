@@ -52,7 +52,7 @@ namespace EleCho.ScratchGame.Utils
         {
             SizeF size = (sprite.Sprite?.Size ?? Size.Empty) * sprite.Scale;
             PointF position = sprite.Position - size / 2;
-            PointF[] rectangle = ImgUtils.RotateAt(new RectangleF(position, size), position + size / 2, ImgUtils.Degree2Radian(sprite.Rotation));
+            PointF[] rectangle = ImgUtils.RotateAt(position + size / 2, new RectangleF(position, size), ImgUtils.Degree2Radian(sprite.Rotation));
             return rectangle;
         }
 
@@ -71,17 +71,51 @@ namespace EleCho.ScratchGame.Utils
 
         public static bool IsCollided(GameObject a, GameObject b)
         {
-            if (a.GetActualCanvas() is Bitmap abmp &&
-                b.GetActualCanvas() is Bitmap bbmp)
-            {
-                PointF
-                    apos = GamePoint2GdiPoint(a.Position) - abmp.Size / 2f,
-                    bpos = GamePoint2GdiPoint(b.Position) - bbmp.Size / 2f;
+            return false;
+        }
 
-                return IsCollided(abmp, bbmp, (int)apos.X, (int)apos.Y, (int)bpos.X, (int)bpos.Y);
+        public static PointF[]? GetGameCollider(GameObject gameObj)
+        {
+            SizeF? _originSize = gameObj.GetOriginSize();
+            if (!_originSize.HasValue)
+                return null;
+
+            SizeF originSize = _originSize.Value;
+            PointF position = gameObj.Position;
+
+            float originX = position.X;
+            float originY = position.Y;
+
+            float originWidth = originSize.Width;
+            float originHeight = originSize.Height;
+            float halfWidth = originWidth / 2;
+            float halfHeight = originHeight / 2;
+
+            float scale = gameObj.Scale;
+            float radian = ImgUtils.Degree2Radian(gameObj.Rotation);
+
+
+            PointF[] collider = gameObj.Collider.Vertexes;
+
+            int length = collider.Length;
+            PointF[] worldCollider = new PointF[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                PointF p = collider[i];
+                ImgUtils.Rotate(
+                    (originWidth * p.X - halfWidth) * scale,
+                    (originHeight * p.Y - halfHeight) * scale,
+                    radian,
+                    out var x, out var y);
+
+                x += originX;
+                y += originY;
+
+                worldCollider[i] = new PointF(x, y);
             }
 
-            return false;
+            return worldCollider;
         }
 
         /// <summary>

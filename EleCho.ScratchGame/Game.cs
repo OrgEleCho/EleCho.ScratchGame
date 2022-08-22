@@ -1,4 +1,5 @@
 ﻿using EleCho.ScratchGame.Utils;
+using PolygonIntersection;
 using System;
 using System.Collections;
 using System.Diagnostics;
@@ -96,13 +97,22 @@ namespace EleCho.ScratchGame
         public PointF MousePosition => GameUtils.OriginPoint2GamePoint(Size, host.OriginMousePosition);
         #endregion
 
-        public bool IsMouseIn(GameSprite sprite)
+        public bool IsMouseIn(GameObject obj)
         {
-            return GameUtils.MouseInSprite(sprite, MousePosition);
+            PointF[]? polygon = GameUtils.GetGameCollider(obj);
+            if (polygon == null)
+                return false;
+            return Polygon.IsIn(polygon, MousePosition);
         }
-        public bool IsCollided(GameSprite a, GameSprite b)
+        public bool IsCollided(GameObject a, GameObject b)
         {
-            return GameUtils.IsCollided(a, b);
+            if (GameUtils.GetGameCollider(a) is PointF[] polygona &&
+                GameUtils.GetGameCollider(b) is PointF[] polygonb)
+            {
+                return Polygon.IsCollided(polygona, polygonb);
+            }
+
+            return false;
         }
 
         public void InvokeMouse(PointF point)

@@ -33,6 +33,8 @@ namespace SkyWar
                 y = Sprite.Height + Sprite.Height + y;
 
             Position = new PointF(Position.X, y);
+
+            Program.Title = $"SkyWar - {1 / Game.DeltaTime:F2}fps";
         }
     }
 }
