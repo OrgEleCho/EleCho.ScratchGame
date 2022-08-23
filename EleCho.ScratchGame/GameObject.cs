@@ -1,4 +1,6 @@
-﻿namespace EleCho.ScratchGame
+﻿using EleCho.ScratchGame.Utils;
+
+namespace EleCho.ScratchGame
 {
     public abstract class GameObject
     {
@@ -17,6 +19,14 @@
         public GameObjectCollider Collider { get; set; } = new GameObjectCollider();
 
         public abstract SizeF? GetOriginSize();
+
+        public SizeF? GetActualSize()
+        {
+            SizeF? originSize = GetOriginSize();
+            if (!originSize.HasValue)
+                return null;
+            return ImgUtils.Rotate(originSize.Value * Scale, Rotation);
+        }
 
         public virtual void InvokeKeyboard(KeyboardKey key)
         {
