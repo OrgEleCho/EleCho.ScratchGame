@@ -73,22 +73,22 @@ namespace EleCho.ScratchGame
         /// <summary>
         /// 开始渲染 (在渲染前调用此方法)
         /// </summary>
-        /// <param name="g"></param>
-        /// <param name="actualRect"></param>
-        /// <param name="originRegion"></param>
-        /// <returns></returns>
-        protected bool BeginBoxRender(Graphics g, [NotNullWhen(true)] out RectangleF? actualRect, [NotNullWhen(true)] out Region originRegion)
+        /// <param name="g">绘图 Graphics</param>
+        /// <param name="boxBackRect">盒子背景矩形</param>
+        /// <param name="originRegion">原Region</param>
+        /// <returns>是否继续绘图</returns>
+        protected bool BeginBoxRender(Graphics g, [NotNullWhen(true)] out RectangleF? boxBackRect, [NotNullWhen(true)] out Region originRegion)
         {
             originRegion = g.Clip;
-            actualRect = GdiUtils.GetActualGdiBounds(this);
-            if (!actualRect.HasValue)
+            boxBackRect = GdiUtils.GetActualGdiBounds(this);
+            if (!boxBackRect.HasValue)
                 return false;
 
-            RectangleF _rect = actualRect.Value;
+            RectangleF _rect = boxBackRect.Value;
             float borderExpansion = BorderExpansion;
             float doubleBorderExpansion = borderExpansion * 2;
             if (borderExpansion != 0)
-                actualRect = _rect = new RectangleF(
+                boxBackRect = _rect = new RectangleF(
                     _rect.X - borderExpansion,
                     _rect.Y - borderExpansion,
                     _rect.Width + doubleBorderExpansion,
@@ -119,12 +119,20 @@ namespace EleCho.ScratchGame
             return true;
         }
 
-        protected bool BeginRender(Graphics g, [NotNullWhen(true)] out RectangleF? rect, [NotNullWhen(true)] out PointF? targetPoint, [NotNullWhen(true)] out Matrix? originTransform)
+        /// <summary>
+        /// 开始绘图 (方法将进行 Region 与 Transform 的设定)
+        /// </summary>
+        /// <param name="g">绘图 Grahpics</param>
+        /// <param name="backRect">背景矩形</param>
+        /// <param name="targetPoint">绘图目标点</param>
+        /// <param name="originTransform">原Transform</param>
+        /// <returns></returns>
+        protected bool BeginRender(Graphics g, [NotNullWhen(true)] out RectangleF? backRect, [NotNullWhen(true)] out PointF? targetPoint, [NotNullWhen(true)] out Matrix? originTransform)
         {
             SizeF? _originSzie = GetOriginSize();
             if (!_originSzie.HasValue)
             {
-                rect = null;
+                backRect = null;
                 targetPoint = null;
                 originTransform = null;
                 return false;
@@ -149,7 +157,7 @@ namespace EleCho.ScratchGame
                 _rect.Y - scaledExpansion,
                 _rect.Width + doubleScaledExpansion,
                 _rect.Height + doubleScaledExpansion);
-            rect = _rect;
+            backRect = _rect;
 
             float borderRadius = BorderRadius;
             if (borderRadius == 0)
@@ -177,7 +185,7 @@ namespace EleCho.ScratchGame
         }
 
         /// <summary>
-        /// 结束渲染 (在渲染后调用此方法)
+        /// 结束渲染 (在渲染后调用此方法, 重置为原Region与Transform)
         /// </summary>
         /// <param name="g"></param>
         /// <param name="originRegion"></param>
@@ -187,12 +195,22 @@ namespace EleCho.ScratchGame
             g.Transform = originTransform;
         }
 
-        protected void RenderBoxBack(Graphics g, RectangleF actualRect)
+        /// <summary>
+        /// 渲染盒背景
+        /// </summary>
+        /// <param name="g">绘图 Graphics</param>
+        /// <param name="rect">矩形区域, 由 BeginBoxRender 获得</param>
+        protected void RenderBoxBack(Graphics g, RectangleF rect)
         {
             if (BoxBackground is not SolidBrush solid || solid.Color.A != 0)
-                g.FillRectangle(BoxBackground, actualRect);
+                g.FillRectangle(BoxBackground, rect);
         }
 
+        /// <summary>
+        /// 渲染背景
+        /// </summary>
+        /// <param name="g">绘图 Graphics</param>
+        /// <param name="rect">矩形区域, 由 BeginRender 获得</param>
         protected void RenderBack(Graphics g, RectangleF rect)
         {
             if (Background is not SolidBrush solid || solid.Color.A != 0)
