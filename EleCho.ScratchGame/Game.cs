@@ -21,6 +21,11 @@ namespace EleCho.ScratchGame
             this.host = host;
             this.width = width;
             this.height = height;
+
+            if (host.Game != null)
+                throw new ArgumentException("GameHost was already contains a Game");
+            host.Game = this;
+
             Size = new Size(Width, Height);
             gdiLeftTop = Point.Truncate(GameUtils.OriginPoint2GdiPoint(Size, Point.Empty));
             Bounds = new Rectangle(new Point(-width / 2, -height / 2), Size);

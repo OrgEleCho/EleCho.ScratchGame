@@ -21,8 +21,6 @@ namespace EleCho.ScratchGame
                 CanvasColor = Color.Pink
             };
 
-            gamePanel.Game = game;
-
             GameSound gs = new GameSound();                     // 背景音乐
             Background bg1 = new Background();                  // 背景1
             Background bg2 = new Background();                  // 背景2  (背景1和2交替滚动实现无限的背景)
