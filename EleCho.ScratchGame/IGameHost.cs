@@ -2,6 +2,7 @@
 {
     public interface IGameHost
     {
+        public Game? Game { get; set; }
         public Graphics GameGraphics { get; }
         public Rectangle GameBounds { get; }
 
