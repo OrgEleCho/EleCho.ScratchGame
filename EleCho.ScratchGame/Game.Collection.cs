@@ -28,6 +28,9 @@ namespace EleCho.ScratchGame
             obj.game = this;
             sprites.Add(obj);
             obj.Load();
+
+            if (IsRunning)
+                obj.Start();
         }
 
         /// <summary>
@@ -40,6 +43,7 @@ namespace EleCho.ScratchGame
             if (sprites.Remove(obj))
             {
                 obj.game = null;
+                obj.Unload();
                 return true;
             }
 
@@ -51,8 +55,11 @@ namespace EleCho.ScratchGame
         /// </summary>
         public void RemoveAllObjects()
         {
-            foreach (GameObject sprite in sprites)
-                sprite.game = null;
+            foreach (GameObject obj in sprites)
+            {
+                obj.game = null;
+                obj.Unload();
+            }
             sprites.Clear();
         }
 

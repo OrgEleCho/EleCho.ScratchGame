@@ -48,25 +48,13 @@ namespace EleCho.ScratchGame.Utils
             return new RectangleF(originPosition, originSize);
         }
 
-        public static PointF[] GetSpriteVertexes(GameSprite sprite)
+        public static bool MouseInSprite(GameObject sprite, PointF gamePoint)
         {
-            SizeF size = (sprite.Sprite?.Size ?? Size.Empty) * sprite.Scale;
-            PointF position = sprite.Position - size / 2;
-            PointF[] rectangle = ImgUtils.RotateAt(position + size / 2, new RectangleF(position, size), ImgUtils.Degree2Radian(sprite.Rotation));
-            return rectangle;
-        }
+            PointF[]? vertexes = GetGameCollider(sprite);
+            if (vertexes == null)
+                return false;
 
-        public static bool MouseInSprite(GameSprite sprite, PointF gamePoint)
-        {
-            using Region region = new Region();
-            using GraphicsPath path = new GraphicsPath();
-
-            PointF[] vertexes = GetSpriteVertexes(sprite);
-
-            path.AddPolygon(vertexes);
-            region.Union(path);
-
-            return region.IsVisible(gamePoint);
+            return Polygon.IsIn(vertexes, gamePoint);
         }
 
         public static bool IsCollided(GameObject a, GameObject b)

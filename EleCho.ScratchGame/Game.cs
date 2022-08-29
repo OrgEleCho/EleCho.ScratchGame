@@ -24,10 +24,10 @@ namespace EleCho.ScratchGame
             Size = new Size(Width, Height);
             gdiLeftTop = Point.Truncate(GameUtils.OriginPoint2GdiPoint(Size, Point.Empty));
             Bounds = new Rectangle(new Point(-width / 2, -height / 2), Size);
-            
+
             bufferedGraphics = BufferedGraphicsManager.Current.Allocate(host.GameGraphics, new Rectangle(0, 0, width, height));
             bufferedGraphics.Graphics.Transform = new Matrix(1, 0, 0, 1, (float)width / 2, (float)height / 2);
-            
+
         }
 
         private Game()
@@ -57,7 +57,15 @@ namespace EleCho.ScratchGame
         public Size Size { get; }
         public Rectangle Bounds { get; }
 
-        public int UpdateDelay { get; set; } = 10;
+        public int UpdateDelay
+        {
+            get => updateDelay; set
+            {
+                if (updateDelay <= 0)
+                    throw new ArgumentException("Value must greator than 0", nameof(value));
+                updateDelay = value;
+            }
+        }
         public bool IsRunning => gameRunTask != null ? !gameRunTask.IsCompleted : false;
 
         public Graphics Graphics => bufferedGraphics?.Graphics ??
@@ -117,17 +125,17 @@ namespace EleCho.ScratchGame
 
         public void InvokeMouse(PointF point)
         {
-            foreach (GameSprite sprite in this)
+            foreach (GameObject obj in this)
             {
-                if (GameUtils.MouseInSprite(sprite, point))
-                    sprite.InvokeMouse();
+                if (GameUtils.MouseInSprite(obj, point))
+                    obj.InvokeMouse();
             }
         }
 
         public void InvokeKeyboard(KeyboardKey key)
         {
-            foreach (GameSprite sprite in this)
-                sprite.InvokeKeyboard(key);
+            foreach (GameObject obj in this)
+                obj.InvokeKeyboard(key);
         }
 
         public void LoadScene(GameScene scene)
@@ -192,9 +200,11 @@ namespace EleCho.ScratchGame
 
         Task? gameRunTask;
         CancellationTokenSource? gameRunCancellation;
+        private int updateDelay = 10;
+
         private async Task MainGameLoopAsync(CancellationToken token)
         {
-            while(true)
+            while (true)
             {
                 if (token.IsCancellationRequested)
                     return;

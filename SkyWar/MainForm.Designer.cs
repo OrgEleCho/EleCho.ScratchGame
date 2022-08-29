@@ -36,7 +36,7 @@
             // gamePanel
             // 
             this.gamePanel.Game = null;
-            this.gamePanel.Location = new System.Drawing.Point(0, 0);
+            this.gamePanel.Location = new System.Drawing.Point(47, 28);
             this.gamePanel.Name = "gamePanel";
             this.gamePanel.RenderDelay = 20;
             this.gamePanel.Size = new System.Drawing.Size(480, 700);
@@ -52,7 +52,7 @@
             this.button1.TabIndex = 1;
             this.button1.Text = "Start Game";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.startButton_Click);
             // 
             // MainForm
             // 

@@ -2,8 +2,8 @@ namespace EleCho.ScratchGame
 {
     internal static class Program
     {
-        static MainForm mainForm;
-        public static string Title { get => mainForm.Text; set => mainForm.Text = value; }
+        static MainForm? mainForm;
+        public static string Title { get => mainForm!.Text; set => mainForm!.Text = value; }
 
         /// <summary>
         ///  The main entry point for the application.

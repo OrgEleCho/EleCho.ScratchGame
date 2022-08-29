@@ -32,21 +32,18 @@ namespace EleCho.ScratchGame
                 return;
 
             Graphics g = game.Graphics;
+            if (!BeginBoxRender(g, out RectangleF? actualRect, out Region originRegion))
+                return;
+            RenderBoxBack(g, actualRect.Value);
+
             Sprite.SetResolution(g.DpiX, g.DpiY);
 
-            SizeF originSize = Sprite.Size;
-            PointF pivot = Pivot;
+            if (!BeginRender(g, out RectangleF? rect, out PointF? targetPoint, out Matrix? originTransform))
+                return;
+            RenderBack(g, rect.Value);
+            g.DrawImage(Sprite, Point.Truncate(targetPoint.Value));
 
-            Matrix origin = g.Transform.Clone();
-            Matrix matrix = origin.Clone();
-            matrix.ScaleAndRotateAt(Scale, Scale, Rotation, GameUtils.GamePoint2GdiPoint(Position));
-
-            PointF targetPoint = GameUtils.GamePoint2GdiPoint(Position) - new SizeF(originSize.Width * pivot.X, originSize.Height * pivot.Y);
-
-            g.Transform = matrix;
-            g.DrawImage(Sprite, Point.Truncate(targetPoint));
-
-            g.Transform = origin;
+            EndRender(g, originRegion, originTransform);
         }
 
         public override SizeF? GetOriginSize()
