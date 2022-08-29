@@ -1,56 +1,56 @@
 # EleCho.ScratchGame
 
-Ò»¸öĞ¡ĞÍµÄµÄ, »ùÓÚ GDI+ µÄ 2D ÓÎÏ·ÒıÇæ. [µã»÷²é¿´Ô¤ÀÀÊÓÆµ](resrc/videos/preview.mp4)
+ä¸€ä¸ªå°å‹çš„çš„, åŸºäº GDI+ çš„ 2D æ¸¸æˆå¼•æ“. [ç‚¹å‡»æŸ¥çœ‹é¢„è§ˆè§†é¢‘](resrc/videos/preview.mp4)
 
-> Áé¸ĞÀ´×ÔÓÚ: MIT µÄ [Scratch](https://scratch.mit.edu/)
+> çµæ„Ÿæ¥è‡ªäº: MIT çš„ [Scratch](https://scratch.mit.edu/)
 
-## ¹¦ÄÜ / Features
+## åŠŸèƒ½ / Features
 
-- [x] ÓÎÏ·¶ÔÏó
-- [x] Êó±êÓë¼üÅÌ
-- [x] ÓÎÏ·½ÇÉ«Ëõ·ÅÓëĞı×ª
+- [x] æ¸¸æˆå¯¹è±¡
+- [x] é¼ æ ‡ä¸é”®ç›˜
+- [x] æ¸¸æˆè§’è‰²ç¼©æ”¾ä¸æ—‹è½¬
 
-## ÈëÃÅ / Get started
+## å…¥é—¨ / Get started
 
-Òª½øĞĞÓÎÏ·¶ÔÏóµÄÂß¼­¸üĞÂ, ÄãĞèÒª´´½¨Ò»¸ö Game ¶ÔÏó, ËüÓÃÀ´³ĞÔØËùÓĞµÄÓÎÏ·¶ÔÏó(GameObject)
+è¦è¿›è¡Œæ¸¸æˆå¯¹è±¡çš„é€»è¾‘æ›´æ–°, ä½ éœ€è¦åˆ›å»ºä¸€ä¸ª Game å¯¹è±¡, å®ƒç”¨æ¥æ‰¿è½½æ‰€æœ‰çš„æ¸¸æˆå¯¹è±¡(GameObject)
 
 ```csharp
 Game game = new Game();
 ```
 
-½ÓÏÂÀ´, Äã¿ÉÒÔÏòÓÎÏ·ÖĞÌí¼ÓÒ»¸ö×î¼òµ¥µÄÌùÍ¼:
+æ¥ä¸‹æ¥, ä½ å¯ä»¥å‘æ¸¸æˆä¸­æ·»åŠ ä¸€ä¸ªæœ€ç®€å•çš„è´´å›¾:
 
 ```csharp
-Bitmap bmp;  // ¼ÙÉèÕâÊÇÎÒÃÇÒªÏÔÊ¾µÄÌùÍ¼
+Bitmap bmp;  // å‡è®¾è¿™æ˜¯æˆ‘ä»¬è¦æ˜¾ç¤ºçš„è´´å›¾
 game.AddSprite(new GameSprite()
 {
-    Sprite = bmp    // Îª GameSprite ¸³ÌùÍ¼
+    Sprite = bmp    // ä¸º GameSprite èµ‹è´´å›¾
 });
 ```
 
-ÎªÁËÔÚ WinForm ´°¿ÚÖĞ½øĞĞÓÎÏ·äÖÈ¾, ÄãĞèÒªÒ»¸ö GamePanel, ½«ÆäÍÏ¶¯µ½´°¿Ú, È»ºóÔÚÖ¸¶¨ÆäÒªäÖÈ¾µÄÓÎÏ·
+ä¸ºäº†åœ¨ WinForm çª—å£ä¸­è¿›è¡Œæ¸¸æˆæ¸²æŸ“, ä½ éœ€è¦ä¸€ä¸ª GamePanel, å°†å…¶æ‹–åŠ¨åˆ°çª—å£, ç„¶ååœ¨æŒ‡å®šå…¶è¦æ¸²æŸ“çš„æ¸¸æˆ
 
 ```csharp
 void Load(object sender, EventArgs args)
 {
-    gamePanel.Game = game;    // Îª GamePanel Ö¸¶¨ÒªäÖÈ¾µÄÓÎÏ·
+    gamePanel.Game = game;    // ä¸º GamePanel æŒ‡å®šè¦æ¸²æŸ“çš„æ¸¸æˆ
 }
 ```
 
-ÒªÆô¶¯ÓÎÏ·Âß¼­¸üĞÂÑ­»·ÒÔ¼°äÖÈ¾Ñ­»·, µ÷ÓÃÆä·½·¨¼´¿É:
+è¦å¯åŠ¨æ¸¸æˆé€»è¾‘æ›´æ–°å¾ªç¯ä»¥åŠæ¸²æŸ“å¾ªç¯, è°ƒç”¨å…¶æ–¹æ³•å³å¯:
 
 ```csharp
 game.StartGame();
 gamePanel.StartRender();
 ```
 
-## Ê¹ÓÃ / Usage
+## ä½¿ç”¨ / Usage
 
-### ×Ô¶¨ÒåÓÎÏ·¶ÔÏó
+### è‡ªå®šä¹‰æ¸¸æˆå¯¹è±¡
 
-ÊµÏÖ¸´ÔÓµÄ¹¦ÄÜ, Äã±ØĞëÊ¹ÓÃ¶¨Òå×Ô¼ºµÄÀàĞÍ, ¼Ì³Ğ GameSprite »òÕß GameText, ²¢ÖØĞ´Ïà¹Ø·½·¨.
+å®ç°å¤æ‚çš„åŠŸèƒ½, ä½ å¿…é¡»ä½¿ç”¨å®šä¹‰è‡ªå·±çš„ç±»å‹, ç»§æ‰¿ GameSprite æˆ–è€… GameText, å¹¶é‡å†™ç›¸å…³æ–¹æ³•.
 
-ÏÂÃæÊÇÒ»¸ö²»¶ÏÏòÓÒÒÆ¶¯µÄÓÎÏ·¶ÔÏó¶¨Òå:
+ä¸‹é¢æ˜¯ä¸€ä¸ªä¸æ–­å‘å³ç§»åŠ¨çš„æ¸¸æˆå¯¹è±¡å®šä¹‰:
 
 ```csharp
 class MoveRightForever : GameSprite
@@ -58,7 +58,7 @@ class MoveRightForever : GameSprite
     public float Speed { get; set; } = 1f;
     public override void Update()
     {
-        // SizeF ±íÊ¾Î»ÒÆ, ³ËÒÔ Game.DeltaTime ÒÔÊ¹ÆäËÙ¶È²»ÊÜÖ¡ÂÊ±ä»¯ËùÓ°Ïì
+        // SizeF è¡¨ç¤ºä½ç§», ä¹˜ä»¥ Game.DeltaTime ä»¥ä½¿å…¶é€Ÿåº¦ä¸å—å¸§ç‡å˜åŒ–æ‰€å½±å“
         Position += new SizeF(Speed, 0) * Game.DeltaTime;
     }
 }
