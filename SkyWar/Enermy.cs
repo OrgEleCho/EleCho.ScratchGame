@@ -23,12 +23,13 @@ namespace SkyWar
 
         WaveFileReader deathSound = new WaveFileReader(Resources.enemy1_down);
 
-        public Enermy()
+        public Enermy(ScoreBoard score)
         {
             Sprite = enermy;
 
             deathSoundPlayer = new WaveOut();
             deathSoundPlayer.Init(deathSound);
+            this.score = score;
         }
 
         public float Speed = 150;
@@ -43,12 +44,15 @@ namespace SkyWar
         }
 
         bool down;
+        private readonly ScoreBoard score;
+
         private async void StartDestroySelf()
         {
             down = true;
             Speed /= 2;
 
             PlayDownSound();
+            score.Score++;
 
             foreach (var frame in deathSequence)
             {

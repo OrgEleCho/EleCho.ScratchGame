@@ -19,6 +19,12 @@ namespace SkyWar
 
         public int Speed = 100;
 
+        float startY;
+        public override void Start()
+        {
+            startY = Position.Y;
+        }
+
         public override void Update()
         {
             if (Sprite == null)
@@ -33,8 +39,6 @@ namespace SkyWar
                 y = Sprite.Height + Sprite.Height + y;
 
             Position = new PointF(Position.X, y);
-
-            Program.Title = $"SkyWar - {1 / Game.DeltaTime:F2}fps";
         }
     }
 }

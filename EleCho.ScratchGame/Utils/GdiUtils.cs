@@ -90,6 +90,23 @@ namespace EleCho.ScratchGame.Utils
             using Graphics g = Graphics.FromImage(output);
             g.DrawImage(origin, (int)drawarea.X, (int)drawarea.Y, (int)drawarea.Width, (int)drawarea.Height);
         }
+
+        /// <summary>
+        /// 获取游戏对象的 GDI 边界矩形
+        /// </summary>
+        /// <param name="obj">游戏对象</param>
+        /// <returns></returns>
+        public static RectangleF? GetActualGdiBounds(GameObject obj)
+        {
+            SizeF? actualSize = obj.GetActualSize();
+            if (!actualSize.HasValue)
+                return null;
+
+            SizeF _actualSize = actualSize.Value;
+            PointF _position = GameUtils.GamePoint2GdiPoint(obj.Position);
+            PointF pivot = obj.Pivot;
+            return new RectangleF(_position - new SizeF(_actualSize.Width * pivot.X, _actualSize.Height * pivot.Y), _actualSize);
+        }
     }
 
     public static class GdiEx

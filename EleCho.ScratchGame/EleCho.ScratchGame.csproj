@@ -6,6 +6,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+        <Version>0.0.1-alpha</Version>
+        <Copyright>Copyright EleCho 2022</Copyright>
+        <RepositoryUrl>https://github.com/EleChoNet/EleCho.ScratchGame</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/EleChoNet/EleCho.ScratchGame</PackageProjectUrl>
+        <Description>Easy and simple 2D game engine based on GDI+</Description>
     </PropertyGroup>
 
 </Project>
