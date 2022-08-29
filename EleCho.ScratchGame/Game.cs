@@ -61,7 +61,7 @@ namespace EleCho.ScratchGame
         {
             get => updateDelay; set
             {
-                if (updateDelay <= 0)
+                if (value <= 0)
                     throw new ArgumentException("Value must greator than 0", nameof(value));
                 updateDelay = value;
             }

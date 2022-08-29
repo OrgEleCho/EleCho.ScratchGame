@@ -6,13 +6,25 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-        <Version>0.0.1-alpha</Version>
+        <Version>0.1.1-alpha</Version>
         <Copyright>Copyright EleCho 2022</Copyright>
         <RepositoryUrl>https://github.com/EleChoNet/EleCho.ScratchGame</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/EleChoNet/EleCho.ScratchGame</PackageProjectUrl>
         <Description>Easy and simple 2D game engine based on GDI+</Description>
+        <Title>Simple 2D Game engine based on GDI+</Title>
+        <Authors>EleCho</Authors>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
+        <PackageTags>2D game_engine GDI+</PackageTags>
+        <PackageReleaseNotes>添加了盒背景, 背景, 边框角度, 边框拓展</PackageReleaseNotes>
     </PropertyGroup>
+
+    <ItemGroup>
+      <None Include="..\readme.md">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
+    </ItemGroup>
 
 </Project>

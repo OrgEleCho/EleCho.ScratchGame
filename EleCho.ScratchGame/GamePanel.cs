@@ -36,8 +36,15 @@ namespace EleCho.ScratchGame
         public Rectangle GameBounds =>
             new Rectangle(Point.Empty, game?.Size ?? throw new InvalidOperationException("No Game object"));
 
-        public int RenderDelay { get; set; } = 20;
-
+        public int RenderDelay
+        {
+            get => renderDelay; set
+            {
+                if (value <= 0)
+                    throw new ArgumentException("Value must greator than 0", nameof(value));
+                renderDelay = value;
+            }
+        }
         public Point OriginMousePosition => PointToClient(MousePosition);
 
         const int WM_KEYDOWN                     = 0x0100;
@@ -142,6 +149,7 @@ namespace EleCho.ScratchGame
 
         Task? renderTask;
         CancellationTokenSource? renderCancellation;
+        private int renderDelay = 20;
 
         private async Task GameRenderLoopAsync(CancellationToken token)
         {
