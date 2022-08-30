@@ -6,7 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-        <Version>0.1.1-alpha</Version>
+        <Version>0.1.2-alpha</Version>
         <Copyright>Copyright EleCho 2022</Copyright>
         <RepositoryUrl>https://github.com/EleChoNet/EleCho.ScratchGame</RepositoryUrl>
         <RepositoryType>git</RepositoryType>

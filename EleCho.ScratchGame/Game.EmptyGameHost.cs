@@ -13,8 +13,9 @@ namespace EleCho.ScratchGame
     {
         public class EmptyGameHost : IGameHost
         {
-            public Graphics GameGraphics => throw new InvalidOperationException("Empty Game object.");
+            public Game? Game { get; set; }
 
+            public Graphics GameGraphics => throw new InvalidOperationException("Empty Game object.");
             public Rectangle GameBounds => Rectangle.Empty;
 
             public Point OriginMousePosition => Point.Empty;
