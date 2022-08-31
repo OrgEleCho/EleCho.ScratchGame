@@ -38,6 +38,8 @@ namespace SkyWar
 
             deathSoundPlayer = new WaveOut();
             deathSoundPlayer.Init(deathSound);
+
+            Pivot = new PointF(0.5f, 0);
         }
 
         WaveOut bulletSoundPlayer;
