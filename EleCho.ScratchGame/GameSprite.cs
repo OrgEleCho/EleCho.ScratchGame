@@ -13,7 +13,21 @@ namespace EleCho.ScratchGame
 {
     public class GameSprite : GameObject
     {
+        private float opacity = 1;
+        protected ColorMatrix colorMatrix = new ColorMatrix();
+        protected ImageAttributes imgAttrs = new ImageAttributes();
+
         public Bitmap? Sprite { get; set; }
+        public float Opacity
+        {
+            get => opacity; set
+            {
+                value = Math.Clamp(value, 0, 1);
+                opacity = value;
+                colorMatrix.Matrix33 = value;
+                imgAttrs.SetColorMatrix(colorMatrix);
+            }
+        }
 
         public GameSprite()
         {
@@ -41,7 +55,9 @@ namespace EleCho.ScratchGame
             if (!BeginRender(g, out RectangleF? rect, out PointF? targetPoint, out Matrix? originTransform))
                 return;
             RenderBack(g, rect.Value);
-            g.DrawImage(Sprite, Point.Truncate(targetPoint.Value));
+            //g.DrawImage(Sprite, Point.Truncate(targetPoint.Value));
+            //g.DrawImage(Sprite, (PointF)Point.Truncate(targetPoint.Value));
+            g.DrawImage(Sprite, new Rectangle(Point.Truncate(targetPoint.Value), Sprite.Size), 0, 0, Sprite.Size.Width, Sprite.Size.Height, GraphicsUnit.Pixel, imgAttrs);
 
             EndRender(g, originRegion, originTransform);
         }
