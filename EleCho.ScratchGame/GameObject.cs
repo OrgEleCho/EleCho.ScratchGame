@@ -1,7 +1,6 @@
 ﻿using EleCho.ScratchGame.Utils;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing.Drawing2D;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace EleCho.ScratchGame
 {
