@@ -1,6 +1,6 @@
 # EleCho.ScratchGame
 
-一个小型的的, 基于 GDI+ 的 2D 游戏引擎. [点击查看预览视频](resrc/videos/preview.mp4)
+一个小型的的, 基于 GDI+ 的 2D 游戏引擎. [点击查看预览视频](https://www.bilibili.com/video/BV1RD4y167JH)
 
 > 灵感来自于: MIT 的 [Scratch](https://scratch.mit.edu/)
 
@@ -60,6 +60,54 @@ class MoveRightForever : GameSprite
     {
         // SizeF 表示位移, 乘以 Game.DeltaTime 以使其速度不受帧率变化所影响
         Position += new SizeF(Speed, 0) * Game.DeltaTime;
+    }
+}
+```
+
+### 碰撞检测
+
+GameSprite 包含默认的简单的碰撞检测, 它基于多边形的碰撞检测.
+
+通过 Game 类的静态 IsCollided 方法来判断两个游戏对象是否碰撞
+
+```csharp
+Game.IsCollided(a, b)
+```
+
+你可以自定义游戏对象的碰撞器多边形, 只需要为其 Collider 属性赋值即可
+
+```csharp
+gameSprite.Collider = new GameObjectCollider(
+    new PointF(.25f, .25f),          // 多边形顶点坐标 (0,0 为左上角, 1,1 为右下角)
+    new PointF(.75f, .25f),
+    new PointF(.75f, .75f),
+    new PointF(.75f, .25f));
+```
+
+### 精灵动画
+
+通过变换 Sprite 的值, 来实现简单的动画
+
+```csharp
+class Warplane : GameSprite
+{
+    Bitmap[] bodies;
+    public Warplane(Bitmap[] bodies)
+    {
+        this.bodies = bodies;
+        SpriteChangeLoop();
+    }
+    
+    private async void SpriteChangeLoop()
+    {
+        while (true)
+        {
+            foreach (var me in bodies)
+            {
+                await Task.Delay(100);
+                Sprite = me;
+            }
+        }
     }
 }
 ```
